@@ -2,6 +2,7 @@
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Drawing;
+using static Silk.NET.Core.Native.WinString;
 
 namespace Szem1
 {
@@ -96,6 +97,40 @@ namespace Szem1
             // NO GL calls
         }
 
+        private static unsafe void DrawLines()
+        {
+            uint vertexArray = Gl.GenVertexArray();
+            uint vertexBuffer = Gl.GenBuffer();
+
+            Gl.BindVertexArray(vertexArray);
+            Gl.BindBuffer(GLEnum.ArrayBuffer, vertexBuffer);
+
+            float[] vertices = { 
+                -0.5f, -0.45f, -0.6f, 0.3f,
+                -0.25f, -0.63f, -0.3f, 0.15f,
+                -0.71f, -0.15f, 0, -0.55f,
+                -0.75f, 0.1f, 0, -0.25f,
+
+                0.5f, -0.45f, 0.6f, 0.3f,
+                0.25f, -0.63f, 0.3f, 0.15f,
+                0, -0.25f, 0.77f, 0.16f,
+                0, -0.55f, 0.72f, -0.13f,
+
+                0.25f, 0.6f, -0.6f, 0.3f,
+                0.5f, 0.5f, -0.3f, 0.15f,
+                -0.25f, 0.6f, 0.6f, 0.3f,
+                -0.5f, 0.5f, 0.3f, 0.15f,
+            };
+
+            Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)vertices.AsSpan(), GLEnum.StaticDraw);
+
+            Gl.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0, null);
+            Gl.EnableVertexAttribArray(0);
+
+            Gl.BindVertexArray(vertexArray);
+            Gl.DrawArrays(PrimitiveType.Lines, 0, (uint)vertices.Length/2);
+        }
+
         private static unsafe void Window_Render(double deltaTime)
         {
             //Console.WriteLine($"Render after {deltaTime} [s].");
@@ -121,30 +156,30 @@ namespace Szem1
                 //jobb oldal
                 0f, 0f, 0f,
                 0f, -0.8f, 0f,
-                0.8f, 0.4f, 0f,  
+                0.8f, 0.4f, 0f,
                 0.7f, -0.3f, 0f, 
 
                 //felso oldal
                 0f, 0f, 0f,
                 -0.8f, 0.4f, 0f,
-                0.8f, 0.4f, 0f,  
+                0.8f, 0.4f, 0f,
                 0f, 0.7f, 0f,
                 
-                //bal rubikkocka oldal
-                0f, 0f, 0f,
-                0f, -0.266f, 0f,
-                -0.266f, -0.066f, 0f,
-                -0.266f, 0.133f, 0f,
+                ////bal rubikkocka oldal
+                //0f, 0f, 0f,
+                //0f, -0.266f, 0f,
+                //-0.266f, -0.066f, 0f,
+                //-0.266f, 0.133f, 0f,
 
-                0f, -0.266f, 0f,
-                0f, -0.533f, 0f,
-                -0.266f, -0.066f, 0f,
-                -0.266f, -0.3f, 0f,
+                //0f, -0.266f, 0f,
+                //0f, -0.533f, 0f,
+                //-0.266f, -0.066f, 0f,
+                //-0.266f, -0.3f, 0f,
 
-                0f, -0.533f, 0f,
-                0f, -0.8f, 0f,
-                -0.266f, -0.3f, 0f,
-                -0.266f, -0.61f, 0f,
+                //0f, -0.533f, 0f,
+                //0f, -0.8f, 0f,
+                //-0.266f, -0.3f, 0f,
+                //-0.266f, -0.61f, 0f,
             };
 
             float[] colorArray = new float[]
@@ -223,9 +258,10 @@ namespace Szem1
 
             // we used element buffer
             Gl.DrawElements(GLEnum.Triangles, (uint)indexArray.Length, GLEnum.UnsignedInt, null);
-            
+            DrawLines();
+
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, 0);
-            
+
             // always unbound the vertex buffer first, so no halfway results are displayed by accident
             Gl.DeleteBuffer(verticles);
             Gl.DeleteBuffer(colors);
