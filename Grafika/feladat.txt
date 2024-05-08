@@ -1,0 +1,1 @@
+Egy sikon mozog par kocka jobbra-balra. A felhasznalo egy objektumot (pl. egy macskat) mozgat, a cel az, hogy kikerulje a kockakat es jusson a masik oldalra. Ha utkozik egy kockaval, akkor visszabb lesz teleportalva, hogy probalkozzon ujra. Egy gomb segitsegevel lehet valtani felulnezet es belso nezet kozott. Skybox lehet peldaul egy varos vagy egy autopalya.
