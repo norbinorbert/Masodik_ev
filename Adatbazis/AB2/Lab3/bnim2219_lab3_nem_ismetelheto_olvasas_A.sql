@@ -1,0 +1,13 @@
+USE DeliveryCompanies
+GO
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+BEGIN TRANSACTION
+SELECT * FROM Foods
+-- a Foods tabla 1-es ID-ju ara at lesz allitva
+
+SELECT * FROM Foods
+ROLLBACK
+
+
+-- megoldas: REPEATABLE READ ISOLATION LEVEL
